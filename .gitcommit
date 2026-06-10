@@ -1,0 +1,20 @@
+<change type>[<scope>]<!>: <description>
+
+# Resolves: #123
+# See also: #456, #789
+# Refs: #abc, #def
+#
+# Change types: fix, feat, build, chore, ci, docs, style, refactor, perf, test, revert
+# - <change type>(<scope>): <description>
+# - <change type>(<scope>): <description>
+# - <change type>(<scope>): <description>
+#
+# BREAKING CHANGE: <description>
+#
+# Authored-by: Lily Fleeting-Craig <2622842c@student.gla.ac.uk>
+#
+# Co-authored-by: name <user@users.noreply.github.com>
+#
+# References:
+# ----------
+# - https://www.conventionalcommits.org/en/v1.0.0/

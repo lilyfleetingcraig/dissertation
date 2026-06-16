@@ -626,4 +626,4 @@ export const toolbox = {
       custom: 'PROCEDURE',
     },
   ],
-};
+}

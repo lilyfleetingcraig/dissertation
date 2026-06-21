@@ -27,12 +27,12 @@
 
 .switch-tab,
 #blockly-area {
-  height: 90%;
-  max-height: 90%;
+    height: 90%;
+    max-height: 90%;
 }
 
 .page-tabs {
-  height: 10%;
+    height: 10%;
 }
 
 .page-tabs ul {
@@ -48,7 +48,7 @@
     color: #333;
     user-select: none;
     list-style: none;
-    background-color:red;
+    background-color: red;
     height: 60%;
     padding: 20px;
 }

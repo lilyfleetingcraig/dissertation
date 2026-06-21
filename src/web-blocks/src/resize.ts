@@ -28,8 +28,10 @@ if (!viewPanel) {
 const savePanelWidth = function (): void {
     const containerWidth: number = viewPanel.parentElement!.offsetWidth;
     if (containerWidth === 0) return;
-    const ratio: number = parseFloat(viewPanel.style.flexBasis) / containerWidth;
-    if (Number.isFinite(ratio)) localStorage.setItem(VIEW_PANEL_WIDTH_STORAGE_KEY, String(ratio));
+    const ratio: number =
+        parseFloat(viewPanel.style.flexBasis) / containerWidth;
+    if (Number.isFinite(ratio))
+        localStorage.setItem(VIEW_PANEL_WIDTH_STORAGE_KEY, String(ratio));
 };
 
 /**
@@ -96,9 +98,13 @@ export const resizeBlocklyAreas = function (): void {
 const resizeTrigger = function (event: MouseEvent): void {
     if (isResizingActive) {
         const container = viewPanel.parentElement!;
-        const maxWidth = container.offsetWidth - resizer.offsetWidth - MIN_PANEL_WIDTH;
+        const maxWidth =
+            container.offsetWidth - resizer.offsetWidth - MIN_PANEL_WIDTH;
         const containerLeft: number = container.getBoundingClientRect().left;
-        const newWidth: number = Math.max(MIN_PANEL_WIDTH, Math.min(event.clientX - containerLeft, maxWidth));
+        const newWidth: number = Math.max(
+            MIN_PANEL_WIDTH,
+            Math.min(event.clientX - containerLeft, maxWidth)
+        );
         viewPanel.style.flexBasis = `${newWidth}px`;
     }
     resizeBlocklyAreas();

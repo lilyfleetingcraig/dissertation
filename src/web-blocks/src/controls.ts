@@ -25,7 +25,8 @@ const loadTab = (panelId: string): string | null =>
  */
 export const restoreTab = (panelId: string, defaultTabId: string): void => {
     const savedTabId = loadTab(panelId);
-    const tabExists = savedTabId && document.getElementById(savedTabId) !== null;
+    const tabExists =
+        savedTabId && document.getElementById(savedTabId) !== null;
     toggleTab(panelId, tabExists ? savedTabId : defaultTabId);
 };
 
@@ -42,7 +43,7 @@ export const toggleTab = function (panelId: string, targetTabId: string): void {
         return;
     }
     const tabs = panel.querySelectorAll<HTMLElement>(SWITCHING_TAB_REFERENCE);
-    tabs.forEach(tab => {
+    tabs.forEach((tab) => {
         tab.style.display = tab.id === targetTabId ? 'block' : 'none';
     });
 

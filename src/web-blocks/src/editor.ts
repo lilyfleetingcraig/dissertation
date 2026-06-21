@@ -7,7 +7,7 @@
 import * as Blockly from 'blockly';
 import { blocks } from './blocks/text';
 import { forBlock } from './generators/javascript';
-import { javascriptGenerator} from 'blockly/javascript';
+import { javascriptGenerator } from 'blockly/javascript';
 import { toolbox } from './toolbox';
 import { resizeBlocklyAreas } from './resize';
 import { toggleTab, restoreTab } from './controls';
@@ -89,7 +89,7 @@ workspaces.push(CSSWorkspace);
 
 window.addEventListener('resize', () => resizeBlocklyAreas(), false);
 
-document.querySelectorAll<HTMLElement>('[data-tab]').forEach(tab => {
+document.querySelectorAll<HTMLElement>('[data-tab]').forEach((tab) => {
     tab.addEventListener('click', () => {
         const panelId = tab.dataset.panel;
         const tabId = tab.dataset.tab;

@@ -1,0 +1,59 @@
+.resizable-area {
+    display: flex;
+    height: 90vh;
+}
+
+.panel {
+    overflow: auto;
+    padding: 0px;
+}
+
+.left {
+    background-color: #fff;
+    flex-basis: 50%;
+    flex-shrink: 0;
+}
+
+.right {
+    background-color: #fff;
+    flex-grow: 1;
+}
+
+.resizer {
+    width: 10px;
+    cursor: ew-resize;
+    background-color: #333;
+}
+
+.switch-tab,
+#blockly-area {
+    height: 90%;
+    max-height: 90%;
+}
+
+.page-tabs {
+    height: 10%;
+}
+
+.page-tabs ul {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.page-tabs ul li {
+    color: #333;
+    user-select: none;
+    list-style: none;
+    background-color: red;
+    height: 60%;
+    padding: 20px;
+}
+
+#code,
+#preview {
+    overflow-y: scroll;
+}

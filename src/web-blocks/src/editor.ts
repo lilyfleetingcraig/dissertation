@@ -9,12 +9,18 @@ import { blocks } from './blocks/text';
 import { forBlock } from './generators/javascript';
 import { javascriptGenerator } from 'blockly/javascript';
 import { toolbox } from './toolbox';
-import { resizeBlocklyAreas } from './resize';
+import {
+    resizeBlocklyAreas,
+    restoreSavedWidth,
+    makeResizeHandlers,
+} from './resize';
 import { toggleTab, restoreTab } from './controls';
 import './editor.css';
 
 const DEFAULT_VIEW_PANEL_TAB = 'preview';
 const DEFAULT_CODE_PANEL_TAB = 'blockly-HTML-div';
+
+console.trace('editor.ts evaluated');
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(blocks);
@@ -28,6 +34,7 @@ export const workspaces: Blockly.WorkspaceSvg[] = [];
 const blocklyArea = document.getElementById('blockly-area');
 const blocklyHTMLDiv = document.getElementById('blockly-HTML-div');
 const blocklyCSSDiv = document.getElementById('blockly-CSS-div');
+const resizer = document.getElementById('resizer');
 
 if (!blocklyHTMLDiv) {
     throw new Error('Blockly HTML div not found');
@@ -39,6 +46,10 @@ if (!blocklyCSSDiv) {
 
 if (!blocklyArea) {
     throw new Error('Blockly area div not found');
+}
+
+if (!resizer) {
+    throw new Error('Resizer not found');
 }
 
 const HTMLWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyHTMLDiv, {
@@ -86,8 +97,13 @@ const CSSWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyCSSDiv, {
 workspaces.push(CSSWorkspace);
 
 // Bind listeners
+const { onMouseDown } = makeResizeHandlers(workspaces);
 
-window.addEventListener('resize', () => resizeBlocklyAreas(), false);
+resizer.addEventListener('mousedown', onMouseDown);
+window.addEventListener('resize', () => resizeBlocklyAreas(workspaces));
+document.addEventListener('DOMContentLoaded', () =>
+    restoreSavedWidth(workspaces)
+);
 
 document.querySelectorAll<HTMLElement>('[data-tab]').forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -102,4 +118,5 @@ document.querySelectorAll<HTMLElement>('[data-tab]').forEach((tab) => {
 document.addEventListener('DOMContentLoaded', () => {
     restoreTab('view-panel', DEFAULT_VIEW_PANEL_TAB);
     restoreTab('code-panel', DEFAULT_CODE_PANEL_TAB);
+    restoreSavedWidth(workspaces);
 });

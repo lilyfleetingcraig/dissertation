@@ -1,3 +1,7 @@
+body.resizing #view-panel {
+    user-select: none;
+}
+
 .resizable-area {
     display: flex;
     height: 90vh;

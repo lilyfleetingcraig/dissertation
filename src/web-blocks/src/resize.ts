@@ -1,5 +1,4 @@
 import * as Blockly from 'blockly';
-import { workspaces } from './editor';
 
 const VIEW_PANEL_WIDTH_STORAGE_KEY: string = 'view-panel-width';
 const MIN_PANEL_WIDTH: number = 300;
@@ -10,21 +9,10 @@ const blocklyArea: HTMLElement | null = document.getElementById('blockly-area');
 const resizer: HTMLElement | null = document.getElementById('resizer');
 const viewPanel: HTMLElement | null = document.getElementById('view-panel');
 
-if (!blocklyArea) {
-    throw new Error('Blockly area div not found');
-}
+if (!blocklyArea) throw new Error('Blockly area div not found');
+if (!resizer) throw new Error('Resizer not found');
+if (!viewPanel) throw new Error('View panel not found');
 
-if (!resizer) {
-    throw new Error('Resizer not found');
-}
-
-if (!viewPanel) {
-    throw new Error('View panel not found');
-}
-
-/**
- * Saves the current view panel width as a ratio of its container to localStorage.
- */
 const savePanelWidth = function (): void {
     const containerWidth: number = viewPanel.parentElement!.offsetWidth;
     if (containerWidth === 0) return;
@@ -34,10 +22,6 @@ const savePanelWidth = function (): void {
         localStorage.setItem(VIEW_PANEL_WIDTH_STORAGE_KEY, String(ratio));
 };
 
-/**
- * Reads the saved width ratio from localStorage.
- * @returns The saved ratio as a number between 0 and 1, or null if unset or invalid.
- */
 const loadPanelWidth = function (): number | null {
     const stored = localStorage.getItem(VIEW_PANEL_WIDTH_STORAGE_KEY);
     if (stored === null) return null;
@@ -45,29 +29,20 @@ const loadPanelWidth = function (): number | null {
     return Number.isFinite(ratio) && ratio > 0 && ratio < 1 ? ratio : null;
 };
 
-/**
- * Sets the view panel to the given pixel width then resizes blockly workspaces.
- * @param width - The desired panel width in pixels.
- */
-const applyPanelWidth = function (width: number): void {
-    viewPanel.style.flexBasis = `${width}px`;
-    resizeBlocklyAreas();
-};
-
-/**
- * Loads the saved width ratio and applies it relative to the current container width.
- */
-const restoreSavedWidth = function (): void {
+export const restoreSavedWidth = function (
+    workspaces: Blockly.WorkspaceSvg[]
+): void {
     const ratio = loadPanelWidth();
     if (ratio === null) return;
     const containerWidth = viewPanel.parentElement!.offsetWidth;
-    applyPanelWidth(ratio * containerWidth);
+    const width = ratio * containerWidth;
+    viewPanel.style.flexBasis = `${width}px`;
+    resizeBlocklyAreas(workspaces);
 };
 
-/**
- * Resizes all Blockly workspace divs to match the allocated editor area.
- */
-export const resizeBlocklyAreas = function (): void {
+export const resizeBlocklyAreas = function (
+    workspaces: Blockly.WorkspaceSvg[]
+): void {
     if (!blocklyArea) return;
 
     let x: number = 0;
@@ -91,11 +66,10 @@ export const resizeBlocklyAreas = function (): void {
     }
 };
 
-/**
- * Resize panels relative to each other, with minimum area on either editor pane.
- * @param event - The mousemove event from the document listener.
- */
-const resizeTrigger = function (event: MouseEvent): void {
+const resizeTrigger = function (
+    workspaces: Blockly.WorkspaceSvg[],
+    event: MouseEvent
+): void {
     if (isResizingActive) {
         const container = viewPanel.parentElement!;
         const maxWidth =
@@ -107,26 +81,28 @@ const resizeTrigger = function (event: MouseEvent): void {
         );
         viewPanel.style.flexBasis = `${newWidth}px`;
     }
-    resizeBlocklyAreas();
+    resizeBlocklyAreas(workspaces);
 };
 
-/**
- * Stop resizing - saves the final panel width, and cleans up listeners.
- */
-const stopResizeTrigger = function (): void {
-    isResizingActive = false;
-    savePanelWidth();
-    document.removeEventListener('mousemove', resizeTrigger);
-    document.removeEventListener('mouseup', stopResizeTrigger);
+export const makeResizeHandlers = (workspaces: Blockly.WorkspaceSvg[]) => {
+    let boundMouseMove: ((e: MouseEvent) => void) | null = null;
+
+    const onMouseUp = () => {
+        isResizingActive = false;
+        savePanelWidth();
+        if (boundMouseMove)
+            document.removeEventListener('mousemove', boundMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        document.body.classList.remove('resizing');
+    };
+
+    const onMouseDown = () => {
+        isResizingActive = true;
+        boundMouseMove = (e) => resizeTrigger(workspaces, e);
+        document.addEventListener('mousemove', boundMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+        document.body.classList.add('resizing');
+    };
+
+    return { onMouseDown };
 };
-
-// Bind listeners
-
-resizer.addEventListener('mousedown', () => {
-    isResizingActive = true;
-    document.addEventListener('mousemove', resizeTrigger);
-    document.addEventListener('mouseup', stopResizeTrigger);
-});
-
-// Restore saved width after all content successfully loaded
-document.addEventListener('DOMContentLoaded', restoreSavedWidth);

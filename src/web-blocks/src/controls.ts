@@ -37,7 +37,6 @@ export const restoreTab = (panelId: string, defaultTabId: string): void => {
  * @param targetTabId - The id of the tab element to make visible.
  */
 export const toggleTab = function (panelId: string, targetTabId: string): void {
-    console.log(targetTabId);
     const panel: HTMLElement | null = document.getElementById(panelId);
     if (!panel) {
         return;

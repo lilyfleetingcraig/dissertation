@@ -118,4 +118,41 @@ document.addEventListener('DOMContentLoaded', () => {
     restoreTab('view-panel', DEFAULT_VIEW_PANEL_TAB, workspaces);
     restoreTab('code-panel', DEFAULT_CODE_PANEL_TAB, workspaces);
     restoreSavedWidth(workspaces);
+
+    // Add icons to toolbox categories
+    setTimeout(() => {
+        addToolboxIcons();
+    }, 100);
 });
+
+/**
+ * Inject emoji icons dynamically to toolbox.
+ */
+const addToolboxIcons = function (): void {
+    const iconMap: { [key: string]: string } = {
+        Page: '📄',
+        Text: '✏️',
+        Style: '🎨',
+    };
+
+    document
+        .querySelectorAll('.blocklyToolboxCategoryIcon')
+        .forEach((iconSpan) => {
+            const container = iconSpan.closest(
+                '.blocklyTreeRowContentContainer'
+            );
+            if (container) {
+                const label = container.querySelector(
+                    '.blocklyToolboxCategoryLabel'
+                );
+                if (label) {
+                    const categoryName = label.textContent?.trim();
+                    const icon =
+                        categoryName && iconMap[categoryName]
+                            ? iconMap[categoryName]
+                            : '•';
+                    iconSpan.textContent = icon + ' ';
+                }
+            }
+        });
+};

@@ -84,7 +84,9 @@ const resizeTrigger = function (
     resizeBlocklyAreas(workspaces);
 };
 
-export const makeResizeHandlers = (workspaces: Blockly.WorkspaceSvg[]) => {
+export const makeResizeHandlers = function (
+    workspaces: Blockly.WorkspaceSvg[]
+) {
     let boundMouseMove: ((e: MouseEvent) => void) | null = null;
 
     const onMouseUp = () => {

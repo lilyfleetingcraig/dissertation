@@ -61,3 +61,36 @@ body.resizing #view-panel {
 #preview {
     overflow-y: scroll;
 }
+
+/* Toolbox categories */
+.blocklyToolboxCategoryIcon {
+    visibility: visible !important;
+    background-image: none !important; /* Hide the default triangle symbol */
+    font-size: 24px;
+    margin-right: 8px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+}
+
+.blocklyToolboxCategory {
+    padding: 12px 8px !important;
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 14px !important;
+}
+
+.blocklyTreeRowContentContainer {
+    align-items: center !important;
+    display: flex !important;
+}
+
+.blocklyToolboxCategoryLabel {
+    font-weight: 500 !important;
+    padding-left: 6px !important;
+}

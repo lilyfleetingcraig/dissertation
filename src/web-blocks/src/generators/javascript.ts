@@ -32,3 +32,20 @@ forBlock['add_text'] = function (
     const code = `${addText}(${text});\n`;
     return code;
 };
+
+// Generator for the website/head block
+forBlock['_head_'] = function (
+    block: Blockly.Block,
+    generator: Blockly.CodeGenerator
+) {
+    const statements = generator.statementToCode(block, 'NAME');
+    const code = `<html>\n${statements}</html>`;
+    return code;
+};
+
+// Generator for the paragraph block
+forBlock['paragraph'] = function (block: Blockly.Block) {
+    const text = block.getFieldValue('NAME') || 'Paragraph text';
+    const code = `<p>${text}</p>\n`;
+    return code;
+};

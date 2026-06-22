@@ -1,14 +1,10 @@
-/**
- * @license
- * Copyright 2023 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import * as Blockly from 'blockly';
-import { blocks } from './blocks/text';
+import { htmlBlocks, cssBlocks } from './blocks/blocks';
 import { forBlock } from './generators/javascript';
 import { javascriptGenerator } from 'blockly/javascript';
-import { toolbox } from './toolbox';
+import { toolbox as plainLanguageHtmlToolbox } from './toolboxes/plain-language/html';
+import { toolbox as plainLanguageCssToolbox } from './toolboxes/plain-language/css';
+import { webLanguageTheme } from './theme';
 import {
     resizeBlocklyAreas,
     restoreSavedWidth,
@@ -23,7 +19,8 @@ const DEFAULT_CODE_PANEL_TAB = 'blockly-HTML-div';
 console.trace('editor.ts evaluated');
 
 // Register the blocks and generator with Blockly
-Blockly.common.defineBlocks(blocks);
+Blockly.common.defineBlocks(htmlBlocks);
+Blockly.common.defineBlocks(cssBlocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
 
 // Create the array of Blockly workspaces: HTML, CSS, etc
@@ -53,7 +50,8 @@ if (!resizer) {
 }
 
 const HTMLWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyHTMLDiv, {
-    toolbox: toolbox,
+    toolbox: plainLanguageHtmlToolbox,
+    theme: webLanguageTheme,
     move: {
         scrollbars: {
             horizontal: true,
@@ -75,7 +73,8 @@ const HTMLWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyHTMLDiv, {
 workspaces.push(HTMLWorkspace);
 
 const CSSWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyCSSDiv, {
-    toolbox: toolbox,
+    toolbox: plainLanguageCssToolbox,
+    theme: webLanguageTheme,
     move: {
         scrollbars: {
             horizontal: true,
@@ -109,14 +108,14 @@ document.querySelectorAll<HTMLElement>('[data-tab]').forEach((tab) => {
     tab.addEventListener('click', () => {
         const panelId = tab.dataset.panel;
         const tabId = tab.dataset.tab;
-        if (panelId && tabId) toggleTab(panelId, tabId);
+        if (panelId && tabId) toggleTab(panelId, tabId, workspaces);
     });
 });
 
 // Finally perform function calls on page load
 
 document.addEventListener('DOMContentLoaded', () => {
-    restoreTab('view-panel', DEFAULT_VIEW_PANEL_TAB);
-    restoreTab('code-panel', DEFAULT_CODE_PANEL_TAB);
+    restoreTab('view-panel', DEFAULT_VIEW_PANEL_TAB, workspaces);
+    restoreTab('code-panel', DEFAULT_CODE_PANEL_TAB, workspaces);
     restoreSavedWidth(workspaces);
 });

@@ -1,3 +1,5 @@
+import * as Blockly from 'blockly/core';
+
 const SWITCHING_TAB_REFERENCE: string = '.switch-tab';
 const TAB_STORAGE_KEY_PREFIX = 'active-tab';
 
@@ -22,12 +24,17 @@ const loadTab = (panelId: string): string | null =>
  * Restores the active tab for a panel from localStorage, with given default.
  * @param panelId - The id of the panel to restore.
  * @param defaultTabId - The id of the tab to show if no saved state is found.
+ * @param workspaces - Optional array of Blockly workspaces to resize.
  */
-export const restoreTab = (panelId: string, defaultTabId: string): void => {
+export const restoreTab = (
+    panelId: string,
+    defaultTabId: string,
+    workspaces?: Blockly.WorkspaceSvg[]
+): void => {
     const savedTabId = loadTab(panelId);
     const tabExists =
         savedTabId && document.getElementById(savedTabId) !== null;
-    toggleTab(panelId, tabExists ? savedTabId : defaultTabId);
+    toggleTab(panelId, tabExists ? savedTabId : defaultTabId, workspaces);
 };
 
 /**
@@ -35,8 +42,13 @@ export const restoreTab = (panelId: string, defaultTabId: string): void => {
  * and hiding all sibling elements that share the same tab class.
  * @param panelId - The id of the panel containing the tabs.
  * @param targetTabId - The id of the tab element to make visible.
+ * @param workspaces - Optional array of Blockly workspaces to resize.
  */
-export const toggleTab = function (panelId: string, targetTabId: string): void {
+export const toggleTab = function (
+    panelId: string,
+    targetTabId: string,
+    workspaces?: Blockly.WorkspaceSvg[]
+): void {
     const panel: HTMLElement | null = document.getElementById(panelId);
     if (!panel) {
         return;
@@ -47,4 +59,15 @@ export const toggleTab = function (panelId: string, targetTabId: string): void {
     });
 
     saveTab(panelId, targetTabId);
+
+    // Resize Blockly workspaces if provided
+    if (workspaces && workspaces.length > 0) {
+        // Use requestAnimationFrame to ensure the DOM has been updated
+        requestAnimationFrame(() => {
+            // Import and call resizeBlocklyAreas dynamically to avoid circular dependency
+            import('./resize').then((resizeModule) => {
+                resizeModule.resizeBlocklyAreas(workspaces);
+            });
+        });
+    }
 };

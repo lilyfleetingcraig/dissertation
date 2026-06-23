@@ -1,7 +1,7 @@
 import * as Blockly from 'blockly';
 import { htmlBlocks, cssBlocks } from './blocks/blocks';
-import { forBlock } from './generators/javascript';
-import { javascriptGenerator } from 'blockly/javascript';
+import { htmlForBlock } from './generators/html';
+import { htmlGenerator } from './generators/html-generator';
 import { toolbox as plainLanguageHtmlToolbox } from './toolboxes/plain-language/html';
 import { toolbox as plainLanguageCssToolbox } from './toolboxes/plain-language/css';
 import { webLanguageTheme } from './theme';
@@ -10,18 +10,17 @@ import {
     restoreSavedWidth,
     makeResizeHandlers,
 } from './resize';
+import { save, load, run } from './serialization';
 import { toggleTab, restoreTab } from './controls';
 import './editor.css';
 
 const DEFAULT_VIEW_PANEL_TAB = 'preview';
 const DEFAULT_CODE_PANEL_TAB = 'blockly-HTML-div';
 
-console.trace('editor.ts evaluated');
-
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(htmlBlocks);
 Blockly.common.defineBlocks(cssBlocks);
-Object.assign(javascriptGenerator.forBlock, forBlock);
+Object.assign(htmlGenerator.forBlock, htmlForBlock);
 
 // Create the array of Blockly workspaces: HTML, CSS, etc
 export const workspaces: Blockly.WorkspaceSvg[] = [];
@@ -104,6 +103,22 @@ document.addEventListener('DOMContentLoaded', () =>
     restoreSavedWidth(workspaces)
 );
 
+// Add change listeners to all workspaces.
+for (const workspace of workspaces) {
+    workspace.addChangeListener((event: Blockly.Events.Abstract) => {
+        // Skip UI events - only save on meaningful change.
+        if (
+            event.isUiEvent ||
+            event.type == Blockly.Events.FINISHED_LOADING ||
+            workspace.isDragging()
+        ) {
+            return;
+        }
+        run(workspace, htmlGenerator);
+        save(workspace);
+    });
+}
+
 document.querySelectorAll<HTMLElement>('[data-tab]').forEach((tab) => {
     tab.addEventListener('click', () => {
         const panelId = tab.dataset.panel;
@@ -112,12 +127,17 @@ document.querySelectorAll<HTMLElement>('[data-tab]').forEach((tab) => {
     });
 });
 
-// Finally perform function calls on page load
+// Finally perform function calls on page load.
 
 document.addEventListener('DOMContentLoaded', () => {
     restoreTab('view-panel', DEFAULT_VIEW_PANEL_TAB, workspaces);
     restoreTab('code-panel', DEFAULT_CODE_PANEL_TAB, workspaces);
     restoreSavedWidth(workspaces);
+
+    for (const workspace of workspaces) {
+        load(workspace);
+        run(workspace, htmlGenerator);
+    }
 
     // Add icons to toolbox categories
     setTimeout(() => {

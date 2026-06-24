@@ -6,13 +6,11 @@
 
 import { CodeGenerator } from 'blockly/core';
 
-export class HtmlGenerator extends CodeGenerator {
+export class CssGenerator extends CodeGenerator {
     ORDER_ATOMIC = 0;
     ORDER_NONE = 999;
 
     constructor() {
-        super('HTML');
+        super('CSS');
     }
 }
-
-export const htmlGenerator = new HtmlGenerator();

@@ -1,7 +1,20 @@
+/**
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import * as Blockly from 'blockly';
 import { htmlBlocks, cssBlocks } from './blocks/blocks';
-import { htmlForBlock } from './generators/html';
-import { htmlGenerator } from './generators/html-generator';
+import { htmlForBlock } from './generators/html-block-generators';
+import { cssForBlock } from './generators/css-block-generators';
+import {
+    workspaces,
+    generators,
+    getWorkspacesList,
+    setWorkspace,
+    WorkspaceType,
+} from './workspaces';
 import { toolbox as plainLanguageHtmlToolbox } from './toolboxes/plain-language/html';
 import { toolbox as plainLanguageCssToolbox } from './toolboxes/plain-language/css';
 import { webLanguageTheme } from './theme';
@@ -17,16 +30,13 @@ import './editor.css';
 const DEFAULT_VIEW_PANEL_TAB = 'preview';
 const DEFAULT_CODE_PANEL_TAB = 'blockly-HTML-div';
 
-// Register the blocks and generator with Blockly
+// Register the blocks and generators with Blockly
 Blockly.common.defineBlocks(htmlBlocks);
 Blockly.common.defineBlocks(cssBlocks);
-Object.assign(htmlGenerator.forBlock, htmlForBlock);
-
-// Create the array of Blockly workspaces: HTML, CSS, etc
-export const workspaces: Blockly.WorkspaceSvg[] = [];
+Object.assign(generators.html.forBlock, htmlForBlock);
+Object.assign(generators.css.forBlock, cssForBlock);
 
 // Set up UI elements and inject Blockly
-
 const blocklyArea = document.getElementById('blockly-area');
 const blocklyHTMLDiv = document.getElementById('blockly-HTML-div');
 const blocklyCSSDiv = document.getElementById('blockly-CSS-div');
@@ -69,7 +79,7 @@ const HTMLWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyHTMLDiv, {
     },
 });
 
-workspaces.push(HTMLWorkspace);
+setWorkspace(WorkspaceType.HTML, HTMLWorkspace);
 
 const CSSWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyCSSDiv, {
     toolbox: plainLanguageCssToolbox,
@@ -92,19 +102,21 @@ const CSSWorkspace: Blockly.WorkspaceSvg = Blockly.inject(blocklyCSSDiv, {
     },
 });
 
-workspaces.push(CSSWorkspace);
+setWorkspace(WorkspaceType.CSS, CSSWorkspace);
 
 // Bind listeners
-const { onMouseDown } = makeResizeHandlers(workspaces);
+const { onMouseDown } = makeResizeHandlers(getWorkspacesList());
 
 resizer.addEventListener('mousedown', onMouseDown);
-window.addEventListener('resize', () => resizeBlocklyAreas(workspaces));
+window.addEventListener('resize', () =>
+    resizeBlocklyAreas(getWorkspacesList())
+);
 document.addEventListener('DOMContentLoaded', () =>
-    restoreSavedWidth(workspaces)
+    restoreSavedWidth(getWorkspacesList())
 );
 
 // Add change listeners to all workspaces.
-for (const workspace of workspaces) {
+for (const workspace of getWorkspacesList()) {
     workspace.addChangeListener((event: Blockly.Events.Abstract) => {
         // Skip UI events - only save on meaningful change.
         if (
@@ -114,7 +126,7 @@ for (const workspace of workspaces) {
         ) {
             return;
         }
-        run(workspace, htmlGenerator);
+        run(workspaces);
         save(workspace);
     });
 }
@@ -123,21 +135,22 @@ document.querySelectorAll<HTMLElement>('[data-tab]').forEach((tab) => {
     tab.addEventListener('click', () => {
         const panelId = tab.dataset.panel;
         const tabId = tab.dataset.tab;
-        if (panelId && tabId) toggleTab(panelId, tabId, workspaces);
+        if (panelId && tabId) toggleTab(panelId, tabId, getWorkspacesList());
     });
 });
 
 // Finally perform function calls on page load.
 
 document.addEventListener('DOMContentLoaded', () => {
-    restoreTab('view-panel', DEFAULT_VIEW_PANEL_TAB, workspaces);
-    restoreTab('code-panel', DEFAULT_CODE_PANEL_TAB, workspaces);
-    restoreSavedWidth(workspaces);
+    restoreTab('view-panel', DEFAULT_VIEW_PANEL_TAB, getWorkspacesList());
+    restoreTab('code-panel', DEFAULT_CODE_PANEL_TAB, getWorkspacesList());
+    restoreSavedWidth(getWorkspacesList());
 
-    for (const workspace of workspaces) {
+    for (const workspace of getWorkspacesList()) {
         load(workspace);
-        run(workspace, htmlGenerator);
     }
+
+    run(workspaces);
 
     // Add icons to toolbox categories
     setTimeout(() => {

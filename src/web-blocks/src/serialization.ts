@@ -5,9 +5,10 @@
  */
 
 import * as Blockly from 'blockly/core';
-import { HtmlGenerator } from './generators/html-generator';
+import { previewGenerators, type WorkspaceMap } from './workspaces';
 
 const WORKSPACE_STORAGE_KEY_PREFIX: string = 'workspace-storage';
+const PREVIEW_UPDATE_DELAY = 300; // milliseconds
 
 const codeOutput = document.getElementById('code');
 const previewOutput = document.getElementById('preview');
@@ -20,6 +21,13 @@ if (!previewOutput) {
     throw new Error('Preview output div not found');
 }
 
+// Debounce timer for preview updates
+let previewUpdateTimer: ReturnType<typeof setTimeout> | null = null;
+
+/**
+ * Gets the storage key from the parent div of a workspace.
+ * @param workspace Blockly workspace to save.
+ */
 const getStorageKey = function (
     workspace: Blockly.WorkspaceSvg
 ): string | null {
@@ -66,15 +74,24 @@ export const load = function (workspace: Blockly.WorkspaceSvg) {
 };
 
 /**
- * Generates and outputs code from a workspace.
- * @param workspace Blockly workspace to generate code from.
- * @param generator HTML code generator instance.
+ * Generates and outputs code from workspaces.
+ * Updates both code view and web preview with debouncing.
+ * @param workspaceMap Map of workspace types to their instances.
  */
-export const run = function (
-    workspace: Blockly.Workspace,
-    generator: HtmlGenerator
-) {
-    const code = generator.workspaceToCode(workspace);
-    codeOutput.innerText = code;
-    previewOutput.innerHTML = code;
+export const run = function (workspaceMap: WorkspaceMap) {
+    // Clear existing timer
+    if (previewUpdateTimer !== null) {
+        clearTimeout(previewUpdateTimer);
+    }
+
+    // Debounce the preview update
+    previewUpdateTimer = setTimeout(() => {
+        const codeOutputText: string =
+            previewGenerators.code.generate(workspaceMap);
+        const webOutputText: string =
+            previewGenerators.web.generate(workspaceMap);
+
+        codeOutput.innerText = codeOutputText;
+        previewOutput.innerHTML = webOutputText;
+    }, PREVIEW_UPDATE_DELAY);
 };

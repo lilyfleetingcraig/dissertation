@@ -25,7 +25,7 @@ htmlForBlock['paragraph'] = function (
     block: Blockly.Block,
     generator: HtmlGenerator
 ) {
-    const text = block.getFieldValue('NAME') || 'Paragraph text';
+    const text = block.getFieldValue('TEXT') || 'Paragraph text';
     const nextBlock = generator.blockToCode(block.getNextBlock());
     const code = `<p>${text}</p>\n${nextBlock}`;
     return code;

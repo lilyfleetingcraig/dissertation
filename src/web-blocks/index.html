@@ -4,34 +4,68 @@
         <meta charset="utf-8" />
         <title>Blockly Sample App</title>
         <script type="module" src="src/editor.ts"></script>
-        <link rel="stylesheet" href="./src/base.css" type="text/css" />
+        <script
+            type="module"
+            src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+            nomodule
+            src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.js"
+        ></script>
+        <link rel="stylesheet" href="src/base.css" type="text/css" />
     </head>
+
     <body>
         <header>
-            <h1>Blockly</h1>
+            <a href="./">
+                <img
+                    src="src/assets/logo.png"
+                    alt="webblocks Logo"
+                    id="header-logo"
+                />
+            </a>
         </header>
         <div class="resizable-area">
             <div class="panel left" id="view-panel">
-                <div class="switch-tab" id="preview"></div>
-                <div class="switch-tab" id="code"></div>
-                <div class="page-tabs" id="view-tabs">
-                    <ul>
-                        <li
-                            class="page-tab"
-                            data-panel="view-panel"
-                            data-tab="preview"
-                        >
-                            Preview Website
-                        </li>
-                        <li
-                            class="page-tab"
-                            data-panel="view-panel"
-                            data-tab="code"
-                        >
-                            Preview Code
-                        </li>
-                    </ul>
+                <div class="switch-tab" id="preview">
+                    <div class="output-banner">
+                        <div class="traffic-lights">
+                            <div class="traffic-light red"></div>
+                            <div class="traffic-light yellow"></div>
+                            <div class="traffic-light green"></div>
+                        </div>
+                        <div class="search-bar">
+                            <ion-icon name="globe" class="icon"></ion-icon>
+                            Header
+                        </div>
+                    </div>
+                    <div id="preview-content"></div>
                 </div>
+                <div class="switch-tab" id="code">
+                    <div class="code-output" id="html"></div>
+                    <div class="code-output" id="css"></div>
+                </div>
+                <ul class="page-tabs" id="view-tabs">
+                    <li
+                        class="page-tab"
+                        data-panel="view-panel"
+                        data-tab="preview"
+                    >
+                        <ion-icon name="eye" class="page-tab-icon"></ion-icon>
+                        Preview
+                    </li>
+                    <li
+                        class="page-tab"
+                        data-panel="view-panel"
+                        data-tab="code"
+                    >
+                        <ion-icon
+                            name="code-slash"
+                            class="page-tab-icon"
+                        ></ion-icon>
+                        Code
+                    </li>
+                </ul>
             </div>
             <div class="resizer" id="resizer"></div>
             <div class="panel right" id="code-panel">
@@ -46,24 +80,70 @@
                     id="blockly-CSS-div"
                     style="position: absolute"
                 ></div>
-                <div class="page-tabs" id="code-tabs">
-                    <ul>
-                        <li data-panel="code-panel" data-tab="blockly-HTML-div">
-                            HTML
-                        </li>
-                        <li data-panel="code-panel" data-tab="blockly-CSS-div">
-                            CSS
-                        </li>
-                    </ul>
-                </div>
+                <ul class="page-tabs" id="code-tabs">
+                    <li
+                        class="page-tab"
+                        data-panel="code-panel"
+                        data-tab="blockly-HTML-div"
+                    >
+                        <ion-icon
+                            name="browsers"
+                            class="page-tab-icon"
+                        ></ion-icon>
+                        HTML
+                    </li>
+                    <li
+                        class="page-tab"
+                        data-panel="code-panel"
+                        data-tab="blockly-CSS-div"
+                    >
+                        <ion-icon
+                            name="color-palette"
+                            class="page-tab-icon"
+                        ></ion-icon>
+                        CSS
+                    </li>
+                </ul>
             </div>
         </div>
         <footer>
-            <h1>This is a footer</h1>
-            <p>
-                This is the text that goes in a footer, I need this to see how
-                it offets bla bla.
-            </p>
+            <div class="sitemap">
+                <div class="sitemap-home">
+                    <ul class="sitemap-list">
+                        <li class="sitemap-link sitemap-title">
+                            <a href="">webblocks</a>
+                        </li>
+                        <li class="sitemap-link"><a href="">Home</a></li>
+                    </ul>
+                </div>
+                <div class="sitemap-code">
+                    <ul class="sitemap-list">
+                        <li class="sitemap-link sitemap-title">
+                            <a href="">Code</a>
+                        </li>
+                        <li class="sitemap-link"><a href="">Workspaces</a></li>
+                        <li class="sitemap-link">
+                            <a href="">Start Coding</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sitemap-accounts">
+                    <ul class="sitemap-list">
+                        <li class="sitemap-link sitemap-title">
+                            <a href="">Accounts</a>
+                        </li>
+                        <li class="sitemap-link"><a href="">My Profile</a></li>
+                    </ul>
+                </div>
+                <div class="sitemap-hidden"></div>
+            </div>
+            <a href="./" class="footer-logo-link">
+                <img
+                    src="src/assets/logo.png"
+                    alt="webblocks Logo"
+                    id="footer-logo"
+                />
+            </a>
         </footer>
     </body>
 </html>

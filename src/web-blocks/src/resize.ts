@@ -1,7 +1,7 @@
 import * as Blockly from 'blockly';
 
 const VIEW_PANEL_WIDTH_STORAGE_KEY: string = 'view-panel-width';
-const MIN_PANEL_WIDTH: number = 300;
+const MIN_PANEL_WIDTH: number = 350; // pixels
 
 let isResizingActive: boolean = false;
 

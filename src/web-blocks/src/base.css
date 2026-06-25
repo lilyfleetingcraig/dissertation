@@ -1,3 +1,9 @@
+@import url('includes.css');
+
+:root {
+    font-family: 'Google Sans Code';
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,8 +13,94 @@
 header {
     height: 10vh;
     border-bottom: 1px solid #adadad;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    background-color: var(--dark-accent-colour);
 }
 
 body {
     height: 100vh;
+}
+
+#header-logo {
+    width: 200px;
+    height: auto;
+}
+
+footer {
+    height: 300px;
+    display: flex;
+    justify-content: flex-start;
+    background: #5b80a5;
+    background: linear-gradient(
+        115deg,
+        rgba(91, 128, 165, 1) 0%,
+        rgba(165, 91, 128, 1) 100%
+    );
+}
+
+.sitemap {
+    background-color: var(--plain-colour);
+    width: 75%;
+    height: 80%;
+    margin-left: 30px;
+    margin-top: 30px;
+    border-radius: 30px 0px 30px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.sitemap-list {
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+    text-decoration: none;
+    list-style: none;
+    padding-right: 40px;
+}
+
+.sitemap-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.sitemap-home {
+    padding-left: 50px;
+}
+
+.sitemap-accounts {
+    padding-right: 30px;
+}
+
+.sitemap-link a {
+    text-decoration: none;
+    color: black;
+}
+
+.sitemap-link visited {
+    text-decoration: none;
+    color: black;
+}
+
+.sitemap-link hover {
+    text-decoration: none;
+    color: black;
+}
+
+.footer-logo-link {
+    width: 25%;
+    transform: translateX(-11.5%);
+    padding-top: 27px;
+}
+
+.footer-logo-link img {
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .sitemap-hidden {
+        display: none;
+    }
 }

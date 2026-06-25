@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Google+Sans+Code');
+
+:root {
+    --dark-accent-colour: #1a232d;
+    --lighter-accent-colour: #f8f8f8;
+    --light-accent-colour: #ebebeb;
+    --plain-colour: white;
+    --red: #a55b5b;
+    --orange: #a5745b;
+    --yellow: #a5a55b;
+    --green: #5ba55b;
+    --mint: #5ba593;
+    --blue: #5b80a5;
+    --navy: #5b6da5;
+    --purple: #935ba5;
+    --pink: #a55b80;
+}

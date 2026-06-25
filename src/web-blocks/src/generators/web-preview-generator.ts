@@ -17,7 +17,7 @@ export class WebPreviewGenerator {
     private htmlGenerator: HtmlGenerator;
     private cssGenerator: CssGenerator;
 
-    // Scope CSS selectors to the preview container.
+    // Scope CSS selectors to the preview content container.
     private scopeCSS(css: string): string {
         return css
             .split('}')
@@ -41,12 +41,12 @@ export class WebPreviewGenerator {
     }
 
     private scopeSelector(selector: string): string {
-        // Map 'html' selector to '#preview' for rendering
+        // Map 'html' selector to the preview content container for rendering.
         if (selector === 'html') {
-            return '#preview';
+            return '#preview-content';
         }
-        // Prepend #preview to other selectors
-        return `#preview ${selector}`;
+        // Prepend the preview content container so chrome outside it is untouched.
+        return `#preview-content ${selector}`;
     }
 
     // Generate combined HTML and CSS for preview, with CSS scoped to container.

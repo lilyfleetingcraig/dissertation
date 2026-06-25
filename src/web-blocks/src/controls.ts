@@ -1,7 +1,9 @@
 import * as Blockly from 'blockly/core';
 
 const SWITCHING_TAB_REFERENCE: string = '.switch-tab';
-const TAB_STORAGE_KEY_PREFIX = 'active-tab';
+const TAB_BUTTON_REFERENCE: string = '.page-tab';
+const TAB_STORAGE_KEY_PREFIX: string = 'active-tab';
+const SELECTED_CLASS: string = 'selected';
 
 /**
  * Saves the active tab for a panel to localStorage.
@@ -40,6 +42,7 @@ export const restoreTab = (
 /**
  * Switches the visible tab within a panel by showing the target element
  * and hiding all sibling elements that share the same tab class.
+ * Also updates the .selected class on tab buttons.
  * @param panelId - The id of the panel containing the tabs.
  * @param targetTabId - The id of the tab element to make visible.
  * @param workspaces - Optional array of Blockly workspaces to resize.
@@ -53,9 +56,22 @@ export const toggleTab = function (
     if (!panel) {
         return;
     }
+
+    // Show/hide tab content
     const tabs = panel.querySelectorAll<HTMLElement>(SWITCHING_TAB_REFERENCE);
     tabs.forEach((tab) => {
         tab.style.display = tab.id === targetTabId ? 'block' : 'none';
+    });
+
+    // Update .selected class on tab buttons
+    const tabButtons =
+        panel.querySelectorAll<HTMLElement>(TAB_BUTTON_REFERENCE);
+    tabButtons.forEach((button) => {
+        if (button.getAttribute('data-tab') === targetTabId) {
+            button.classList.add(SELECTED_CLASS);
+        } else {
+            button.classList.remove(SELECTED_CLASS);
+        }
     });
 
     saveTab(panelId, targetTabId);

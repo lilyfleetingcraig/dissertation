@@ -11,14 +11,14 @@ const WORKSPACE_STORAGE_KEY_PREFIX: string = 'workspace-storage';
 const PREVIEW_UPDATE_DELAY = 300; // milliseconds
 
 const codeOutput = document.getElementById('code');
-const previewOutput = document.getElementById('preview');
+const previewOutput = document.getElementById('preview-content');
 
 if (!codeOutput) {
     throw new Error('Code output div not found');
 }
 
 if (!previewOutput) {
-    throw new Error('Preview output div not found');
+    throw new Error('Preview content div not found');
 }
 
 // Debounce timer for preview updates
@@ -91,7 +91,7 @@ export const run = function (workspaceMap: WorkspaceMap) {
         const webOutputText: string =
             previewGenerators.web.generate(workspaceMap);
 
-        codeOutput.innerText = codeOutputText;
+        codeOutput.innerHTML = codeOutputText;
         previewOutput.innerHTML = webOutputText;
     }, PREVIEW_UPDATE_DELAY);
 };

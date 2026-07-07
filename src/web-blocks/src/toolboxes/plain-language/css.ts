@@ -8,7 +8,7 @@ export const toolbox = {
             contents: [
                 {
                     kind: 'block',
-                    type: 'style_rule',
+                    type: 'stylePlainLanguage',
                 },
             ],
         },
@@ -23,7 +23,81 @@ export const toolbox = {
             contents: [
                 {
                     kind: 'block',
-                    type: 'websitePageSelector',
+                    type: 'htmlSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'headSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'bodySelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'titleSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'headerSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'footerSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'backgroundColorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'displayPlainLanguage',
+                },
+            ],
+        },
+        {
+            kind: 'category',
+            name: 'Tables',
+            categorystyle: 'table_category',
+            contents: [
+                {
+                    kind: 'block',
+                    type: 'tableSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'trSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'thSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'tdSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'borderCollapsePlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'tableLayoutPlainLanguage',
+                },
+            ],
+        },
+        {
+            kind: 'category',
+            name: 'Media',
+            categorystyle: 'media_category',
+            contents: [
+                {
+                    kind: 'block',
+                    type: 'imgSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'objectFitPlainLanguage',
                 },
             ],
         },
@@ -34,11 +108,39 @@ export const toolbox = {
             contents: [
                 {
                     kind: 'block',
-                    type: 'paragraphSelector',
+                    type: 'hSelectorPlainLanguage',
                 },
                 {
                     kind: 'block',
-                    type: 'textColour',
+                    type: 'pSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'ulSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'olSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'liSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'aSelectorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'textColorPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'textAlignPlainLanguage',
+                },
+                {
+                    kind: 'block',
+                    type: 'fontWeightPlainLanguage',
                 },
             ],
         },

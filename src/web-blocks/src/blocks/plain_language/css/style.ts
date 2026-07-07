@@ -1,29 +1,31 @@
-const styleRule = {
-    type: 'style_rule',
-    tooltip: 'Define a style rule for an element type',
+const STYLE_BLOCK_COLOUR = 165;
+
+const styleRuleBlock = {
+    type: 'stylePlainLanguage',
+    tooltip: 'Define a CSS style rule',
     helpUrl: '',
-    message0: 'Style rule for type %1 %2 %3 %4',
+    message0: 'Style rule %1 %2 %3 %4',
     args0: [
         {
             type: 'input_value',
-            name: 'SELECTOR',
+            name: 'STYLE_SELECTOR',
         },
         {
             type: 'input_dummy',
-            name: 'DIVIDER1',
+            name: 'SELECTOR_SPACER',
         },
         {
             type: 'input_statement',
-            name: 'STYLES',
+            name: 'STYLE_DECLARATIONS',
         },
         {
             type: 'input_dummy',
-            name: 'DIVIDER2',
+            name: 'STYLE_CLOSER',
         },
     ],
-    colour: 165,
+    colour: STYLE_BLOCK_COLOUR,
 };
 
-export const style = {
-    style_rule: styleRule,
+export const styleBlocks = {
+    stylePlainLanguage: styleRuleBlock,
 };

@@ -6,12 +6,14 @@
 
 import * as Blockly from 'blockly/core';
 import { previewGenerators, type WorkspaceMap } from './workspaces';
+import { generators } from './workspaces';
 
 const WORKSPACE_STORAGE_KEY_PREFIX: string = 'workspace-storage';
 const PREVIEW_UPDATE_DELAY = 300; // milliseconds
 
 const codeOutput = document.getElementById('code');
 const previewOutput = document.getElementById('preview-content');
+const previewBannerTitle = document.getElementById('preview-banner-title');
 
 if (!codeOutput) {
     throw new Error('Code output div not found');
@@ -21,8 +23,49 @@ if (!previewOutput) {
     throw new Error('Preview content div not found');
 }
 
+if (!previewBannerTitle) {
+    throw new Error('Preview banner title element not found');
+}
+
 // Debounce timer for preview updates
 let previewUpdateTimer: ReturnType<typeof setTimeout> | null = null;
+
+/**
+ * Extracts the first title from generated preview markup.
+ * @param html Generated preview HTML.
+ * @returns The trimmed title text, or an empty string when absent.
+ */
+const getPreviewTitle = (html: string): string => {
+    const parsedDocument = new DOMParser().parseFromString(html, 'text/html');
+    const titleElement = parsedDocument.querySelector('title');
+
+    return titleElement?.textContent?.trim() ?? '';
+};
+
+const updateStyleRuleWarnings = (workspaceMap: WorkspaceMap): void => {
+    const cssWorkspace = workspaceMap.css;
+    const htmlWorkspace = workspaceMap.html;
+
+    if (!cssWorkspace) {
+        return;
+    }
+
+    const stylesheetImported = htmlWorkspace
+        ? htmlWorkspace
+              .getBlocksByType('stylesheetPlainLanguage', false)
+              .some((block) => block.isEnabled())
+        : false;
+    const warningText = stylesheetImported
+        ? null
+        : 'This CSS rule is not imported in the page metadata. Add a stylesheet block to preview it.';
+
+    for (const block of cssWorkspace.getBlocksByType(
+        'stylePlainLanguage',
+        false
+    )) {
+        block.setWarningText(warningText, 'stylesheet-import');
+    }
+};
 
 /**
  * Gets the storage key from the parent div of a workspace.
@@ -86,12 +129,18 @@ export const run = function (workspaceMap: WorkspaceMap) {
 
     // Debounce the preview update
     previewUpdateTimer = setTimeout(() => {
+        updateStyleRuleWarnings(workspaceMap);
         const codeOutputText: string =
             previewGenerators.code.generate(workspaceMap);
         const webOutputText: string =
             previewGenerators.web.generate(workspaceMap);
+        const rawHtmlCode = workspaceMap.html
+            ? generators.html.workspaceToCode(workspaceMap.html)
+            : '';
+        const previewTitle = getPreviewTitle(rawHtmlCode);
 
         codeOutput.innerHTML = codeOutputText;
         previewOutput.innerHTML = webOutputText;
+        previewBannerTitle.textContent = previewTitle;
     }, PREVIEW_UPDATE_DELAY);
 };

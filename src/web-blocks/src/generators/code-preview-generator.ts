@@ -73,10 +73,8 @@ export class CodePreviewGenerator {
             ? this.cssGenerator.workspaceToCode(workspaces.css)
             : '';
 
-        const htmlDisplay = htmlCode.trim()
-            ? htmlCode
-            : '<!-- No HTML blocks -->';
-        const cssDisplay = cssCode.trim() ? cssCode : '/* No CSS blocks */';
+        const htmlDisplay = htmlCode.trim() ? htmlCode : '';
+        const cssDisplay = cssCode.trim() ? cssCode : '';
         const hasHtmlCode = htmlCode.trim().length > 0;
         const hasCssCode = cssCode.trim().length > 0;
 

@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () =>
 
 // Add change listeners to all workspaces.
 for (const workspace of getWorkspacesList()) {
+    workspace.addChangeListener(Blockly.Events.disableOrphans);
     workspace.addChangeListener((event: Blockly.Events.Abstract) => {
         // Skip UI events - only save on meaningful change.
         if (
@@ -152,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     run(workspaces);
 
-    // Add icons to toolbox categories
+    // Add icons to toolbox categories.
     setTimeout(() => {
         addToolboxIcons();
     }, 100);
@@ -163,9 +164,19 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 const addToolboxIcons = function (): void {
     const iconMap: { [key: string]: string } = {
-        Page: '📄',
-        Text: '✏️',
-        Style: '🎨',
+        Style: 'brush',
+        Page: 'document-text',
+        Tables: 'browsers',
+        Media: 'images',
+        Text: 'text',
+    };
+
+    const colourMap: { [key: string]: string } = {
+        Style: '#5BA58C',
+        Page: '#A55B5B',
+        Tables: '#A5745B',
+        Media: '#80A55B',
+        Text: '#A55B80',
     };
 
     document
@@ -180,11 +191,18 @@ const addToolboxIcons = function (): void {
                 );
                 if (label) {
                     const categoryName = label.textContent?.trim();
-                    const icon =
+                    const iconName =
                         categoryName && iconMap[categoryName]
                             ? iconMap[categoryName]
-                            : '•';
-                    iconSpan.textContent = icon + ' ';
+                            : 'ellipse';
+                    iconSpan.replaceChildren();
+
+                    const iconElement = document.createElement('ion-icon');
+                    iconElement.setAttribute('name', iconName);
+                    iconElement.classList.add('toolbox-category-icon');
+                    (iconSpan as HTMLElement).style.color =
+                        (categoryName && colourMap[categoryName]) || '#000';
+                    iconSpan.appendChild(iconElement);
                 }
             }
         });

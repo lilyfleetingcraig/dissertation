@@ -49,6 +49,10 @@ export class WebPreviewGenerator {
         return `#preview-content ${selector}`;
     }
 
+    private hasStylesheetImport(htmlCode: string): boolean {
+        return htmlCode.includes('rel="stylesheet"');
+    }
+
     // Generate combined HTML and CSS for preview, with CSS scoped to container.
     generate(workspaces: WorkspaceMap): string {
         const htmlCode = workspaces.html
@@ -57,9 +61,11 @@ export class WebPreviewGenerator {
         const cssCode = workspaces.css
             ? this.cssGenerator.workspaceToCode(workspaces.css)
             : '';
+        const stylesheetImported = this.hasStylesheetImport(htmlCode);
 
         // Scope CSS to preview container
-        const scopedCSS = cssCode ? this.scopeCSS(cssCode) : '';
+        const scopedCSS =
+            cssCode && stylesheetImported ? this.scopeCSS(cssCode) : '';
 
         // Wrap in a container to scope CSS
         return `

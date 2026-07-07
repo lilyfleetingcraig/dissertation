@@ -18,13 +18,13 @@ body.resizing #view-panel {
 }
 
 .left {
-    background-color: #fff;
+    background-color: var(--plain-colour);
     flex-basis: 50%;
     flex-shrink: 0;
 }
 
 .right {
-    background-color: #fff;
+    background-color: var(--plain-colour);
     flex-grow: 1;
 }
 
@@ -39,10 +39,6 @@ body.resizing #view-panel {
     height: 90%;
     max-height: 90%;
 }
-
-/* #preview, #code {
-  height: calc(var(--resize-window-height) - var(--output-banner-height));
-} */
 
 .page-tabs {
     height: 10%;
@@ -84,6 +80,38 @@ body.resizing #view-panel {
 
 #preview {
     position: relative;
+}
+
+#preview-content {
+    margin: 8px;
+    min-height: calc(100% - var(--output-banner-height));
+}
+
+#preview-content ul,
+#preview-content ol {
+    margin: 16px 0;
+    padding-left: 32px;
+}
+
+#preview-content li {
+    margin: 4px 0;
+}
+
+#preview-content table {
+    width: 100%;
+    margin: 16px 0;
+    border-collapse: collapse;
+}
+
+#preview-content th,
+#preview-content td {
+    border: 1px solid #999;
+    padding: 8px;
+    text-align: left;
+}
+
+#preview-content th {
+    background-color: var(--plain-colour);
 }
 
 .code-output {
@@ -145,6 +173,17 @@ body.resizing #view-panel {
     flex-shrink: 0;
     width: 32px;
     height: 32px;
+}
+
+.blocklyToolboxCategoryIcon ion-icon {
+    width: 24px;
+    height: 24px;
+    color: currentColor;
+}
+
+.blocklyToolboxSelected .blocklyToolboxCategoryIcon ion-icon,
+.blocklyToolboxSelected .blocklyToolboxCategoryIcon {
+    color: #fff !important;
 }
 
 .blocklyToolboxCategory {

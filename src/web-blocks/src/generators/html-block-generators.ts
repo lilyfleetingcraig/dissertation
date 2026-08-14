@@ -47,9 +47,14 @@ htmlForBlock['headPlainLanguage'] = createContainerGenerator(
     'METADATA_CONTENT'
 );
 
-htmlForBlock['stylesheetPlainLanguage'] = function (block: Blockly.Block) {
+htmlForBlock['stylesheetPlainLanguage'] = function (
+    block: Blockly.Block,
+    generator: HtmlGenerator
+) {
     const stylesheetUrl = block.getFieldValue('STYLESHEET_URL') || 'style.css';
-    return `<link rel="stylesheet" href="${stylesheetUrl}">\n`;
+    const nextBlock = generator.blockToCode(block.getNextBlock());
+
+    return `<link rel="stylesheet" href="${stylesheetUrl}">\n${nextBlock}`;
 };
 
 htmlForBlock['bodyPlainLanguage'] = createContainerGenerator(

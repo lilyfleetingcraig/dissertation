@@ -96,7 +96,7 @@ const backgroundColourProperty = createDropdownPropertyBlock(
         ['white', 'white'],
         ['light gray', 'lightgray'],
         ['beige', 'beige'],
-        ['transparent', 'transparent'],
+        ['sky blue', 'skyblue'],
     ]
 );
 

@@ -9,7 +9,7 @@ import { previewGenerators, type WorkspaceMap } from './workspaces';
 import { generators } from './workspaces';
 
 const WORKSPACE_STORAGE_KEY_PREFIX: string = 'workspace-storage';
-const PREVIEW_UPDATE_DELAY = 300; // milliseconds
+const PREVIEW_UPDATE_DELAY = 100; // milliseconds
 
 const codeOutput = document.getElementById('code');
 const previewOutput = document.getElementById('preview-content');

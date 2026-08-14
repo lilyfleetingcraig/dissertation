@@ -177,6 +177,36 @@ export const toolbox = {
                 },
                 {
                     kind: 'block',
+                    type: 'olPlainLanguage',
+                    inputs: {
+                        LIST_ITEMS: {
+                            block: {
+                                type: 'liPlainLanguage',
+                                fields: {
+                                    ITEM_TEXT: 'Item 1',
+                                },
+                                next: {
+                                    block: {
+                                        type: 'liPlainLanguage',
+                                        fields: {
+                                            ITEM_TEXT: 'Item 2',
+                                        },
+                                        next: {
+                                            block: {
+                                                type: 'liPlainLanguage',
+                                                fields: {
+                                                    ITEM_TEXT: 'Item 3',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                {
+                    kind: 'block',
                     type: 'hPlainLanguage',
                 },
                 {

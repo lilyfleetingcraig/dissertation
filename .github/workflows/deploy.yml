@@ -25,7 +25,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: src/web-blocks
+        working-directory: WebBlocks
         
     steps:
       - name: Checkout repository
@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 26
           cache: npm
-          cache-dependency-path: src/web-blocks/package-lock.json
+          cache-dependency-path: WebBlocks/package-lock.json
       - name: Install dependencies
         run: npm ci
       - name: Build
@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: './src/web-blocks/dist'
+          path: './WebBlocks/dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5

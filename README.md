@@ -10,7 +10,7 @@ WebBlocks can be installed and set up very easily - instructions for this, as we
 
 `Meetings/`: Markdown meeting notes with the project supervisor from each meeting.
 
-`Source Code/`:
+`WebBlocks/`:
 Original source code for the project.
 
 `.github/`:
